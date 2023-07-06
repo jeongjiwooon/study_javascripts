@@ -9,16 +9,16 @@
 
 // let outHtml = ``;
 
-// function tablelist(result)
-// {
-//     for (let hashmap of list_obj)
-//     {
-//         outHtml = `${outHtml}<tr><td>${hashmap.year}</td><td>${hashmap.car_name}</td><td>${hashmap.car_infor_id}</td><td>${hashmap.company_id}</td></tr>`;
-//     }
-//     let list_source = document.querySelector('#list');
-//     list_source.innerHTML = outHtml;
-//     return result;
-// }
+function tablelist(result)
+{
+    for (let hashmap of list_obj)
+    {
+        outHtml = `${outHtml}<tr><td>${hashmap.year}</td><td>${hashmap.car_name}</td><td>${hashmap.car_infor_id}</td><td>${hashmap.company_id}</td></tr>`;
+    }
+    let list_source = document.querySelector('#list');
+    list_source.innerHTML = outHtml;
+    return result;
+}
 
 // // tablelist();
 
@@ -74,3 +74,38 @@ function fetchCar()
             console.log(errorMeg);
         });
 };
+
+let keydownObject = document.querySelector("#keydownEnter");
+
+keydownObject.addEventListener('keydown', (event) => 
+{
+    if (event.code == 'Enter')
+    {
+        console.log(`key down: ${event.code}`);
+        getSelectAllFromREST();
+    }
+});
+
+
+function getSelectAllFromREST()
+{
+    let getInputObject = document.querySelector("#keydownEnter");
+    let inputValue = getInputObject.value;
+
+    let url = `http://192.168.0.40:8080/selectAll/${inputValue}`;
+    
+    let request = fetch(url)
+    .then((result) => 
+    {
+        return result.json();
+    })
+    .then((data) =>
+    {
+        console.log(data);
+        fetchCar(data);
+    })
+    .catch((errorMeg) =>
+    {
+        console.log(errorMeg);
+    });
+}
